@@ -1,0 +1,8 @@
+name: demo-app
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${DEMO_PORT:-8085}:3000"
