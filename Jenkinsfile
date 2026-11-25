@@ -125,12 +125,12 @@ EOF2
                         sh '''
                             set -e
                             case "$QA_JENKINS_URL" in
-                              *localhost*|*127.0.0.1*|*13.203.156.69*|*example.com*)
+                              *localhost*|*127.0.0.1*|*QA-EC2-IP*|*example.com*)
                                 echo "QA_JENKINS_URL is not set to the real QA Jenkins address: $QA_JENKINS_URL"
                                 exit 1 ;;
                             esac
                             case "$APP_URL" in
-                              *13.203.196.213*) echo "APP_URL still contains the placeholder EC2-A-IP"; exit 1 ;;
+                              *EC2-A-IP*) echo "APP_URL still contains the placeholder EC2-A-IP"; exit 1 ;;
                             esac
 
                             BASE="${QA_JENKINS_URL%/}"
