@@ -7,18 +7,18 @@ pipeline {
     parameters {
         string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to deploy')
         string(name: 'HEALTH_URL', defaultValue: 'http://localhost:8085/health', description: 'URL checked ON THE SERVER after deploy')
-        string(name: 'QA_JENKINS_URL', defaultValue: 'http://QA-EC2-IP:8080', description: 'Base URL of the SEPARATE QA Jenkins (EC2-B). Replace QA-EC2-IP with the real IP. Do NOT use localhost.')
+        string(name: 'QA_JENKINS_URL', defaultValue: 'http://13.203.156.69:8080', description: 'Base URL of the SEPARATE QA Jenkins (EC2-B). Replace QA-EC2-IP with the real IP. Do NOT use localhost.')
         string(name: 'QA_JOB_NAME', defaultValue: 'demo-qa-job', description: 'Exact job name on the QA Jenkins')
-        string(name: 'APP_URL', defaultValue: 'http://EC2-A-IP:8085', description: 'Public URL of the demo app (replace EC2-A-IP) - the QA job tests this')
+        string(name: 'APP_URL', defaultValue: 'http://13.203.196.213:8085', description: 'Public URL of the demo app (replace EC2-A-IP) - the QA job tests this')
         booleanParam(name: 'TRIGGER_QA', defaultValue: false, description: 'Trigger the QA job on the QA Jenkins after a successful deploy')
     }
 
     environment {
         // The deploy server is THIS machine (EC2-A). Jenkins logs in to it over SSH, exactly like it would to a remote server.
-        SERVER   = 'ubuntu@127.0.0.1'
+        SERVER   = 'ubuntu@13.203.196.213'
         APP_DIR  = '/home/ubuntu/demo-app'
         // TODO: replace <YOUR-GITHUB-USER> with your GitHub username (public repo, so no key is needed to clone)
-        REPO     = 'https://github.com/<YOUR-GITHUB-USER>/demo-app.git'
+        REPO     = 'https://github.com/akshayshetty7709-tech/demo-app.git'
         // The server key must be in the jenkins user's known_hosts (setup-devops-ec2.sh does this)
         SSH_OPTS = '-o StrictHostKeyChecking=yes'
     }
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sh '''
                     case "$REPO" in
-                      *"<YOUR-GITHUB-USER>"*) echo "Set REPO in the Jenkinsfile to your real GitHub repo URL"; exit 1 ;;
+                      *"akshayshetty7709-tech"*) echo "Set REPO in the Jenkinsfile to your real GitHub repo URL"; exit 1 ;;
                     esac
                     echo "Deploying branch $BRANCH from $REPO to $SERVER:$APP_DIR"
                 '''
@@ -125,12 +125,12 @@ EOF2
                         sh '''
                             set -e
                             case "$QA_JENKINS_URL" in
-                              *localhost*|*127.0.0.1*|*QA-EC2-IP*|*example.com*)
+                              *localhost*|*127.0.0.1*|*13.203.156.69*|*example.com*)
                                 echo "QA_JENKINS_URL is not set to the real QA Jenkins address: $QA_JENKINS_URL"
                                 exit 1 ;;
                             esac
                             case "$APP_URL" in
-                              *EC2-A-IP*) echo "APP_URL still contains the placeholder EC2-A-IP"; exit 1 ;;
+                              *13.203.196.213*) echo "APP_URL still contains the placeholder EC2-A-IP"; exit 1 ;;
                             esac
 
                             BASE="${QA_JENKINS_URL%/}"
