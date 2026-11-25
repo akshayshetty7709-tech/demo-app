@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sh '''
                     case "$REPO" in
-                      *"akshayshetty7709-tech"*) echo "Set REPO in the Jenkinsfile to your real GitHub repo URL"; exit 1 ;;
+                      *"<YOUR-GITHUB-USER>"*) echo "Set REPO in the Jenkinsfile to your real GitHub repo URL"; exit 1 ;;
                     esac
                     echo "Deploying branch $BRANCH from $REPO to $SERVER:$APP_DIR"
                 '''
